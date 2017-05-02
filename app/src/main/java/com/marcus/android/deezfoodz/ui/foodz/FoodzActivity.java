@@ -33,17 +33,21 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.marcus.android.deezfoodz.R;
+import com.marcus.android.deezfoodz.app.DeezFoodzApplication;
 import com.marcus.android.deezfoodz.app.StringUtils;
 import com.marcus.android.deezfoodz.model.FoodzItem;
 import com.marcus.android.deezfoodz.ui.food.FoodActivity;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FoodzActivity extends AppCompatActivity implements FoodzView {
 
+  @Inject
   FoodzPresenter presenter;
 
   @BindView(R.id.activity_foodz_recyclerView)
@@ -57,12 +61,13 @@ public class FoodzActivity extends AppCompatActivity implements FoodzView {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_foodz);
+    ((DeezFoodzApplication)getApplication()).getAppComponent().inject(this);
 
     ButterKnife.bind(this);
 
     foodzRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-    presenter = new FoodzPresenterImpl();
+
     presenter.setView(this);
     presenter.getFoodz();
   }
